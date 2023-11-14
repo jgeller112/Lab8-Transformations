@@ -1,0 +1,277 @@
+---
+title: "Lab 8: Transformations"
+subtitle: "Princeton University"
+author: "INSERT NAME"
+date: 'Updated:`r Sys.Date()`'
+format: html
+toc: true
+toc_float: true
+html:
+    code-fold: true
+    code-tools: true
+---
+
+# Part 1
+
+## Dataset
+
+We will be analyzing data from the following paper:
+
+Winter, B., Perlman, M., Perry, L. K., & Lupyan, G. (2017). Which words are most iconic? Iconicity in English sensory words. Interaction Studies, 18(3), 433-454.
+
+For this study, Winter et al. collected iconicity ratings from 2,500 native American English speakers for 3,000 words. Participants were asked to rate each word for whether "it sounds like what it means" or "it sounds like the opposite of what it means" on a scale from -5.0 to +5.0. Here, we will be looking at each word's average iconicity score, and we want to look at what words are most iconic.
+
+Let's load the data into R
+
+```{r}
+icon <- read_csv("https://raw.githubusercontent.com/jgeller112/psy503-psych_stats/master/static/slides/13_Interactions/data/perry_winter_2017_iconicity.csv")
+
+```
+
+| **Column**                           | **Description**                                                                                                                                                                                                                                                 |
+|-----------------|-------------------------------------------------------|
+| **Word**                             | This is simply the word itself. Each entry in this column is a unique word.                                                                                                                                                                                     |
+| **SER (Sensory Experience Ratings)** | These ratings, from Juhasz & Jap (2013), measure the extent to which a word evokes a sensory experience. This could include visual, auditory, tactile, taste, or smell sensations. A higher rating would typically indicate a stronger sensory association.     |
+| **Imageability**                     | Imageability ratings, from Cortese & Fugett (2004), assess how easily a word conjures a mental image. Words that are easily visualized (like "apple") have high imageability scores, while abstract concepts (like "truth") have lower scores.                  |
+| **Concreteness**                     | Concreteness ratings, sourced from Brysbaert et al. (2014), evaluate how tangible or physical a word is. Concrete words refer to things that can be perceived with the senses (like "rock"), while abstract words (like "freedom") score lower in concreteness. |
+| **Systematicity**                    | Systematicity ratings, provided by Monaghan et al. (2014), might refer to how regularly a word appears in certain linguistic or cognitive contexts, indicating its predictability or regularity in use.                                                         |
+| **Frequency**                        | This column, based on SUBTLEX data from Brysbaert & New (2009), indicates how often a word appears in a given language corpus. A higher frequency means the word is more commonly used.                                                                         |
+
+### Analysis 1: Centering a predictor
+
+> Check whether there are any duplicate words in the dataset (`get_dupes` from `Janitor` package is good one to use)
+
+```{r}
+
+```
+
+- If so, which ones are they? Get rid of those:
+
+```{r}
+#removes dup
+
+```
+
+> Get rid of NAs in the model
+
+```{r}
+
+
+```
+
+> Fit a model regressing iconicity onto the predictor SER (sensory experience ratings):
+
+```{r}
+
+
+```
+
+> Create a centered predictor:
+
+```{r}
+
+```
+
+> Run a centered lm model:
+
+```{r}
+
+```
+
+> Check both model outputs
+
+```{r}
+# Centered:
+
+```
+
+```{r}
+# Uncentered:
+
+```
+
+> Any differences between the two?
+
+> Write up the interpretation of the centered model (intercept and slope)
+
+###  Analysis 2: Log-transforming a predictor
+
+> Create a density graph of the frequency predictor:
+
+```{r}
+
+
+```
+
+> Check the same frequency predictor on a log scale:
+
+```{r}
+
+```
+
+> Use `mutate()` to log transform the frequency predictor:
+
+```{r}
+
+
+```
+
+> Write up an interpretation of the coefficients
+
+###  Analysis 3: Multiple predictors
+
+-   For the main analysis presented in Winter et al. (2017), they regressed iconicity simultaneously onto SER, concreteness, imageability, systematicity and log frequency
+
+> fit that model
+
+```{r}
+# Build a model with all predictors:
+
+```
+
+> Check how the concreteness predictor behaves if imageability is not in the model:
+
+```{r}
+
+
+```
+
+> What do you notice?
+
+> Check correlation between concreteness and imageability
+
+```{r}
+
+```
+
+> Is it high?
+
+> Check multicollinearity of the main with all the variables in the model
+
+```{r}
+
+```
+
+> What is your assessment?
+
+There's a lot of talk about different thresholds, with some saying \>10 is worrisome, others saying \>4 worrisome.
+
+The model in the paper did not go with concreteness because they didn't think it was sufficiently distinct from imageability, also on a theoretical level.
+
+### Analysis 4: Standardizing predictors
+
+-   What predictors have the biggest influence on iconicity ratings?
+
+The problem is that the slopes are unstandardized, which makes them difficult to compare. Remember that each coefficient is given as a rate of how much iconicity has to change "per one unit of that variable". The problem is that "one unit" has very different meanings for the different variables.
+
+> Look at the range of SER and systematicity values
+
+```{r}
+
+# Check range of SER:
+
+# Check range of systematicity:
+
+```
+
+-   Whereas the SER variable ranges from 1 to about 5.2, the systematicity variable has a really narrow range. A one unit (=1.0) change is a massive jump for a variable with this metric.
+
+> Standardize each predictor in the model without concreatness
+
+```{r}
+
+```
+
+> Re-fit the model with the standardized predictors
+
+```{r}
+
+
+
+```
+
+> Rank order the coefficients minus the intercept:
+
+```{r}
+
+
+
+```
+
+> Which one has the biggest influence?
+
+> Write-up this model (focus on interperting the coefficients)
+
+# Part 2 
+
+## Dataset
+
+For this part, we are going to work with data from:
+
+Andersen, M. M., Schjoedt, U., Price, H., Rosas, F. E., Scrivner, C., & Clasen, M. (2020). Playing With Fear: A Field Study in Recreational Horror. Psychological Science, 31(12), 1497-1510. https://doi.org/10.1177/0956797620972116
+
+In their paper, participants (N = 110) went into a commercial 42 room Haunted House with heart rate monitors, completed questionnaires afterward. Three jump scare locations were video recorded, and specific questions were asked about these locations.
+
+For this analysis, we are going to look at the relationship between fear and enjoyment of a specific attraction? Specifically:
+
+X: Fear in "Piggy" Jump Scare (0 = "not at all scared", 9 = "more scared than ever before") Y: Enjoyment of "Piggy" Jump Scare ("not at all!", 9 = "very much!")
+
+## Analysis 5: Polynomial Regression
+
+> Load in data from https://osf.io/kzm7b
+
+```{r}
+library(data.table)
+#the data on OSF is formatted weird
+#fread guesses how columns are different
+
+data <- fread("https://osf.io/kzm7b/download")
+
+```
+
+> Subset the data so we only have a column for `Fear Piggy` and `Enjoy Piggy`
+
+```{r}
+
+
+```
+
+> Create a plot visualizing the realtionship between Fear and Enjoyment
+
+```{r}
+
+
+```
+
+> Do you think a linear model is a good fit to this data?
+
+
+> Use `mutate()` to add a quadratic X term
+
+```{r}
+
+```
+
+> Now fit a polynomial regression that includes a quadratic term
+
+```{r}
+
+df <- data  %>%
+  select(`Fear Piggy`, `Enjoyment Piggy`)
+
+
+summary(lm(`Enjoyment Piggy`~ `Fear Piggy` , data=df))
+
+```
+
+> The coefficient for the squared term is negative. What does this mean?
+
+> Does a model with a quadrtic term fit the data better than a linear one? Test this.
+
+```{r}
+
+```
+
+::: callout-note
+While we do not find a significant quadratic relationship in this analysis, the paper does find one. This is because the paper looked at several scares and empolyed a more powerful  model. Nonetheless, hopefully you better understand how to test non-linear relationships in a  regression context
+:::

@@ -144,7 +144,7 @@ icon <- read_csv("https://raw.githubusercontent.com/jgeller112/psy503-psych_stat
 
 ```
 
-> Is it high?
+> Is it a high correlation?
 
 > Check multicollinearity of the main with all the variables in the model
 
@@ -236,7 +236,7 @@ data <- fread("https://osf.io/kzm7b/download")
 
 ```
 
-> Create a plot visualizing the realtionship between Fear and Enjoyment
+> Create a scatter plot visualizing the realtionship between Fear and Enjoyment
 
 ```{r}
 
@@ -250,8 +250,7 @@ data <- fread("https://osf.io/kzm7b/download")
 
 ```
 
-
-> Use `mutate()` to add a quadratic  term to the dataset
+> Use `mutate()` to add a quadratic/squared  term to the dataset
 
 ```{r}
 
@@ -270,6 +269,14 @@ summary(lm(`Enjoyment Piggy`~ `Fear Piggy` , data=df))
 ```
 
 > The coefficient for the squared term is negative. What does this mean?
+
+>  Add a quadratic line to the scatter plot from above
+
+```{r}
+
+
+```
+
 
 > Does a model with a quadrtic term fit the data better than a linear one? Test this.
 

@@ -92,7 +92,7 @@ icon <- read_csv("https://raw.githubusercontent.com/jgeller112/psy503-psych_stat
 
 > Any differences between the two?
 
-> Write up the interpretation of the centered model (intercept and slope)
+> Write up an interpretation of the coefficients in the centered model
 
 ###  Analysis 2: Log-transforming a predictor
 
@@ -200,7 +200,7 @@ The problem is that the slopes are unstandardized, which makes them difficult to
 
 > Which one has the biggest influence?
 
-> Write-up this model (focus on interperting the coefficients)
+> Write up an interpretation of the coefficients
 
 # Part 2 
 
@@ -243,10 +243,15 @@ data <- fread("https://osf.io/kzm7b/download")
 
 ```
 
-> Do you think a linear model is a good fit to this data?
+> Do you think a linear model is a good fit to this data? Add a linear line to the data. 
+
+```{r}
 
 
-> Use `mutate()` to add a quadratic X term
+```
+
+
+> Use `mutate()` to add a quadratic  term to the dataset
 
 ```{r}
 
@@ -273,5 +278,5 @@ summary(lm(`Enjoyment Piggy`~ `Fear Piggy` , data=df))
 ```
 
 ::: callout-note
-While we do not find a significant quadratic relationship in this analysis, the paper does find one. This is because the paper looked at several scares and empolyed a more powerful  model. Nonetheless, hopefully you better understand how to test non-linear relationships in a  regression context
+While you did  not find a significant quadratic relationship in this analysis, the paper does find one. This is because the paper looked at several scares and employed  a more powerful modeling technique. Nonetheless, hopefully you better understand how to test non-linear relationships in a  regression context
 :::
